@@ -1,27 +1,93 @@
-import React from 'react';
-import { DragDropContext } from 'react-beautiful-dnd';
-import initialData from './data';
-import Column from './Column';
+import React, { Component } from "react";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
-class DrangandDrop extends React.Component { 
-  state = initialData;
+// fake data generator
+const getItems = [
+    {
+      "id": "0",
+      "content": "Rollins Gibson"
+    },
+    {
+      "id": "1",
+      "content": "Hobbs Riggs"
+    },
+    {
+      "id": "2",
+      "content": "Myrna Emerson"
+    },
+    {
+      "id": "3",
+      "content": "Serrano Burton"
+    },
+    {
+      "id": "4",
+      "content": "Kitty Jensen"
+    }
+]
 
-  onDragEnd = result => {
-    // TODO: reorder our column
-  };
+// console.log("getItems", getItems(9));
 
-  render() {
-    return (
-      <DragDropContext onDragEnd={this.onDragEnd}>
-        {this.state.columnOrder.map(columnId => {
-          const column = this.state.columns[columnId];
-          const tasks = column.taskIds.map(taskId => this.state.tasks[taskId]);
+// a little function to help us with reordering the result
+const reorder = (list, startIndex, endIndex) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
 
-          return <Column key={column.id} column={column} tasks={tasks} />;
-        })}
-      </DragDropContext>
-    );
-  }
+    return result;
+};
+
+export default class DragandDrop extends Component {
+    constructor(props, context) {
+        super(props, context);
+        this.state = {
+            items: getItems
+        };
+    }
+
+    onDragEnd = result => {
+        console.log(result);
+        // dropped outside the list
+        if (!result.destination) {
+            return;
+        }
+
+        const items = reorder(
+            this.state.items,
+            result.source.index,
+            result.destination.index
+        );
+
+        this.setState({
+            items
+        });
+    };
+    render() {
+        return (
+            <DragDropContext onDragEnd={this.onDragEnd}>
+                <Droppable droppableId="droppable">
+                    {(droppableProvided) => (
+                        <div
+                            class="dragWrapper"
+                            ref={droppableProvided.innerRef}
+                        >
+                            {this.state.items.map((item, index) => (
+                                <Draggable key={item.id} draggableId={item.id} index={index}>
+                                    {(draggableProvided) => (
+                                        <div
+                                            ref={draggableProvided.innerRef}
+                                            {...draggableProvided.draggableProps}
+                                            {...draggableProvided.dragHandleProps}
+                                        >
+                                            {item.content}
+                                        </div>
+                                    )}
+                                </Draggable>
+                            ))}
+                            {droppableProvided.placeholder}
+                        </div>
+                    )}
+                </Droppable>
+            </DragDropContext>
+        );
+    }
 }
-
-export default DrangandDrop

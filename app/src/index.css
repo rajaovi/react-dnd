@@ -11,3 +11,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.App {
+  padding: 2em;
+}
+
+.dragWrapper {
+  width: 300px;
+}
+.dragWrapper div {
+  background-color: white;
+  border: 1px solid #333;
+  margin-bottom: .5em;
+  padding: 1em;
+}
