@@ -25,9 +25,6 @@ const getItems = [
     }
 ]
 
-// console.log("getItems", getItems(9));
-
-// a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -66,25 +63,25 @@ export default class DragandDrop extends Component {
             <DragDropContext onDragEnd={this.onDragEnd}>
                 <Droppable droppableId="droppable">
                     {(droppableProvided) => (
-                        <div
+                        <ul
                             class="dragWrapper"
                             ref={droppableProvided.innerRef}
                         >
                             {this.state.items.map((item, index) => (
                                 <Draggable key={item.id} draggableId={item.id} index={index}>
                                     {(draggableProvided) => (
-                                        <div
+                                        <li
                                             ref={draggableProvided.innerRef}
                                             {...draggableProvided.draggableProps}
                                             {...draggableProvided.dragHandleProps}
                                         >
                                             {item.content}
-                                        </div>
+                                        </li>
                                     )}
                                 </Draggable>
                             ))}
                             {droppableProvided.placeholder}
-                        </div>
+                        </ul>
                     )}
                 </Droppable>
             </DragDropContext>
