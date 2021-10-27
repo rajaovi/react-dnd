@@ -17,7 +17,8 @@ code {
 }
 
 .dragWrapper {
-  width: 300px;
+  margin: 0 auto;
+  width: 350px;
 }
 .dragWrapper li {
   background-color: white;

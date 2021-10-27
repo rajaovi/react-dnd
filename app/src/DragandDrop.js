@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
-// fake data generator
 const getItems = [
     {
       "id": "0",
